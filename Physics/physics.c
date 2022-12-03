@@ -48,11 +48,11 @@ bool movePoint(TPoint* point,enum TEvent directionEvent)
 bool movePacman(TMap* map,TPacman* pacman,const enum TEvent directionEvent)
 {
     bool hasMoved = false;
+    pacman->lastPosition.x = pacman->position.x;
+    pacman->lastPosition.y = pacman->position.y;
     if(!isWall(map, pacman->position.x, pacman->position.y, directionEvent))
     {
         hasMoved = true;
-        pacman->lastPosition.x = pacman->position.x;
-        pacman->lastPosition.y = pacman->position.y;
         hasMoved = movePoint(&pacman->position, directionEvent);
     }
     else

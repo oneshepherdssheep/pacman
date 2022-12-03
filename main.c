@@ -70,39 +70,34 @@ void gameLoop()
         event = getLastUserInputEvent();
         if(isEventAMove(event) && !partyFinished)
         {
-            // Physics
-            bool hasMoved = movePacman(map_g,&pacman_g,event);
-            if(hasMoved)
+            // Pacman Physics
+            movePacman(map_g,&pacman_g,event);
+            removeFoodElement(map_g, pacman_g.position.x, pacman_g.position.y);
+            // Game Logic most priority for Pacman (Win counted first than Loss)
+            if(isGameWon(map_g))
             {
-                removeFoodElement(map_g, pacman_g.position.x, pacman_g.position.y);
-                // GameLogic
-                if(isGameWon(map_g))
-                {
-                    partyStatus = PARTY_WON;
-                    partyFinished = true;
-                }
-                else if(isGameLost(pacman_g,ghosts_g,ghostCount))
+                partyStatus = PARTY_WON;
+                partyFinished = true;
+            }
+            else if(isGameLost(pacman_g,ghosts_g,ghostCount))
+            {
+                partyStatus = PARTY_LOST;
+                partyFinished = true;
+            }
+            else
+            {
+                // Ghosts Physics
+                moveGhosts(map_g,&pacman_g,ghosts_g,ghostCount);
+                updateGhostsState(&pacman_g,ghosts_g,ghostCount);
+                // Game Logic less priority for Ghosts
+                if(isGameLost(pacman_g,ghosts_g,ghostCount))
                 {
                     partyStatus = PARTY_LOST;
                     partyFinished = true;
                 }
-                else
-                {
-                    moveGhosts(map_g,&pacman_g,ghosts_g,ghostCount);
-                    updateGhostsState(&pacman_g,ghosts_g,ghostCount);
-                    if(isGameLost(pacman_g,ghosts_g,ghostCount))
-                    {
-                        partyStatus = PARTY_LOST;
-                        partyFinished = true;
-                    }
-                }
-                // Graphics
-                draw(map_g,pacman_g,ghosts_g);
             }
-            else
-            {
-                // Nothing to do
-            }
+            // Graphics for all
+            draw(map_g,pacman_g,ghosts_g);
         }
         else if(partyFinished)
         {
