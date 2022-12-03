@@ -2,13 +2,13 @@
 #include "../Map/map.h"
 #include "../AI/ai.h"
 
-bool movePointTo(TPoint* point,const TPoint destination)
+bool PHYSICS_movePointTo(TPoint* point, const TPoint destination)
 {
     point->x = destination.x;
     point->y = destination.y;
 }
 
-bool movePoint(TPoint* point,enum TEvent directionEvent)
+bool PHYSICS_movePoint(TPoint* point, enum TEvent directionEvent)
 {
     bool pointChanged = true;
     // UP
@@ -45,15 +45,15 @@ bool movePoint(TPoint* point,enum TEvent directionEvent)
  * @param pacman
  * @param directionEvent
  */
-bool movePacman(TMap* map,TPacman* pacman,const enum TEvent directionEvent)
+bool PHYSICS_movePacman(TMap* map, TPacman* pacman, enum TEvent directionEvent)
 {
     bool hasMoved = false;
     pacman->lastPosition.x = pacman->position.x;
     pacman->lastPosition.y = pacman->position.y;
-    if(!isWall(map, pacman->position.x, pacman->position.y, directionEvent))
+    if(!MAP_isWall(map, pacman->position.x, pacman->position.y, directionEvent))
     {
         hasMoved = true;
-        hasMoved = movePoint(&pacman->position, directionEvent);
+        hasMoved = PHYSICS_movePoint(&pacman->position, directionEvent);
     }
     else
     {
@@ -68,21 +68,21 @@ bool movePacman(TMap* map,TPacman* pacman,const enum TEvent directionEvent)
  * @param ghosts
  * @param directionEvent
  */
-void moveGhosts(TMap* map,TPacman* pacman,TGhost* ghosts,const size_t ghostCount)
+void PHYSICS_moveGhosts(TMap* map, TPacman* pacman, TGhost* ghosts, const size_t ghostCount)
 {
     for(size_t index = 0; index < ghostCount; index++)
     {
         //// NORMAL
         if(ghosts[index].state == NORMAL)
         {
-            enum TEvent nextDirection = getRandomAvailableDirection(map,ghosts[index]);
-            movePoint(&ghosts[index].position, nextDirection);
+            enum TEvent nextDirection = AI_getRandomAvailableDirection(map, ghosts[index]);
+            PHYSICS_movePoint(&ghosts[index].position, nextDirection);
             ghosts[index].lastDirection = nextDirection;
         }
         //// CHASE
         else if(ghosts[index].state == CHASE)
         {
-            movePointTo(&ghosts[index].position, pacman->lastPosition);
+            PHYSICS_movePointTo(&ghosts[index].position, pacman->lastPosition);
         }
         else
         {
@@ -91,11 +91,11 @@ void moveGhosts(TMap* map,TPacman* pacman,TGhost* ghosts,const size_t ghostCount
     }
 }
 
-void updateGhostsState(const TPacman* pacman,TGhost* ghosts,const size_t ghostCount)
+void PHYSICS_updateGhostsState(const TPacman* pacman, TGhost* ghosts, const size_t ghostCount)
 {
     for(size_t index = 0; index < ghostCount; index++)
     {
-        if(isPointCloseToPoint(pacman->position, ghosts[index].position))
+        if(UTILS_isPointCloseToPoint(pacman->position, ghosts[index].position))
         {
             ghosts[index].state = CHASE;
         }
@@ -107,7 +107,7 @@ void updateGhostsState(const TPacman* pacman,TGhost* ghosts,const size_t ghostCo
 }
 
 
-bool isPointCloseToPoint(TPoint p1,TPoint p2)
+bool UTILS_isPointCloseToPoint(TPoint p1, TPoint p2)
 {
     // UP
     if((p1.x==p2.x) && ((p1.y-UP_DOWN_STEP)==p2.y))

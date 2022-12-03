@@ -18,11 +18,11 @@ typedef struct
     bool available;
 } TDirections;
 
-size_t rollDice(size_t numberOfFaces);
-enum TEvent getDirection(const TMap *map, TGhost ghost,enum AILevel level);
-enum TEvent getRandomDirection(const TMap *map,TGhost ghost);
-enum TEvent getRandomAvailableDirection(const TMap *map,TGhost ghost);
-enum TEvent getBestDirectionToFollowPacman(const TMap *map,TGhost ghost);
+size_t AI_rollDice(size_t numberOfFaces);
+// enum TEvent getDirection(const TMap *map, TGhost ghost,enum AILevel level);
+// enum TEvent getRandomDirection(const TMap *map,TGhost ghost);
+enum TEvent AI_getRandomAvailableDirection(const TMap *map, TGhost ghost);
+// enum TEvent getBestDirectionToFollowPacman(const TMap *map,TGhost ghost);
 
 
 

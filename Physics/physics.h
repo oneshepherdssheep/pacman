@@ -8,16 +8,12 @@
 #include "../Map/map.h"
 
 // Move Actions
-bool movePacman(TMap* map,TPacman* pacman, enum TEvent directionEvent);
-bool movePoint(TPoint* point,enum TEvent directionEvent);
-bool movePointTo(TPoint* point,const TPoint destination);
-void moveGhosts(TMap* map,TPacman* pacman,TGhost* ghosts,const size_t ghostCount);
-
-// Tests
-void isPacmanCollideWithAFood(TMap* map,TPacman* pacman);
-void isPacmanCollideWithAGhost(TMap* map,TPacman* pacman,TGhost* ghosts[2]);
+bool PHYSICS_movePacman(TMap* map, TPacman* pacman, enum TEvent directionEvent);
+bool PHYSICS_movePoint(TPoint* point, enum TEvent directionEvent);
+bool PHYSICS_movePointTo(TPoint* point, const TPoint destination);
+void PHYSICS_moveGhosts(TMap* map, TPacman* pacman, TGhost* ghosts, const size_t ghostCount);
 
 // Others
-void updateGhostsState(const TPacman* pacman,TGhost* ghosts,const size_t ghostCount);
+void PHYSICS_updateGhostsState(const TPacman* pacman, TGhost* ghosts, const size_t ghostCount);
 
 #endif

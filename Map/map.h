@@ -45,38 +45,36 @@ struct PacmanMap {
 // set
 // ------------------------------------------------------------ //
 
-void initMap(TMap* map);
-void setInSideMapValue(TMap* map, char newValue, u_int8_t newValue_x, u_int8_t newValue_y);
+void MAP_initMap(TMap* map);
+void MAP_setInSideMapValue(TMap* map, char newValue, u_int8_t newValue_x, u_int8_t newValue_y);
 
 // ------------------------------------------------------------ //
 // get
 // ------------------------------------------------------------ //
 
-const char * getMapFilePath();
-TPoint getPacmanInitialPosition(TMap* map);
-TPoint getGhostInitialPosition(TMap* map,size_t index);
-size_t getFoodCount(const TMap* map);
+const char * MAP_getMapFilePath();
+TPoint MAP_getPacmanInitialPosition(TMap* map);
+TPoint MAP_getGhostInitialPosition(TMap* map, size_t index);
+size_t MAP_getFoodCount(const TMap* map);
 
 // ------------------------------------------------------------ //
 // checker
 // ------------------------------------------------------------ //
 
-bool isMapValid(TMap* map);
-bool isCharacterImportedValid(char character);
-bool isCharacterMapValid(char character);
-bool isElementFood(TMap* map,size_t x,size_t y);
-bool isWall(TMap* map, size_t x, size_t y, enum TEvent direction);
-bool isCoordinatesValid(size_t x, size_t y);
-bool isCoordinatesValidForAMove(size_t x, size_t y);
+bool MAP_isMapValid(const TMap* map);
+bool MAP_isCharacterImportedValid(char character);
+bool MAP_isCharacterMapValid(char character);
+bool MAP_isElementFood(const TMap* map, size_t x, size_t y);
+bool MAP_isWall(const TMap* map, size_t x, size_t y, enum TEvent direction);
+bool MAP_isCoordinatesValid(size_t x, size_t y);
 
 // ------------------------------------------------------------ //
 // others
 // ------------------------------------------------------------ //
 
-MapOperationResult loadMap(TMap* map);
-void removeMoveableElement(TMap* map);
-void removeFoodElement(TMap* map,size_t x,size_t y);
-void insertMoveableElement(TMap* map,const TPacman pacman,const TGhost ghosts[2]);
-void printMap(TMap* map);
+bool MAP_loadMap(TMap* map);
+void MAP_removeMovableElement(TMap* map);
+void MAP_removeFoodElement(TMap* map, size_t x, size_t y);
+void MAP_insertMovableElement(TMap* map, const TPacman pacman, const TGhost ghosts[2]);
 
 #endif

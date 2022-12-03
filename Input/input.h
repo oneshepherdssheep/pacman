@@ -13,8 +13,8 @@
 #define RIGHT 'd'
 #define QUIT 'Q'
 
-bool isEventAMove(enum TEvent event);
-enum TEvent getLastUserInputEvent();
-enum TEvent getLastAIInputEvent();
+bool INPUT_isEventAMove(enum TEvent event);
+enum TEvent INPUT_getLastUserInputEvent();
+enum TEvent INPUT_getLastAIInputEvent();
 
 #endif

@@ -1,6 +1,6 @@
 #include "map.h"
 
-bool isMapValid(TMap *map)
+bool MAP_isMapValid(const TMap *map)
 {
     bool valid = true;
     for(size_t line = 0; line < MAP_LINE_COUNT; line++)
@@ -32,7 +32,7 @@ bool isMapValid(TMap *map)
             // other element inside
             else
             {
-                if(!isCharacterMapValid((*map)[line][column]))
+                if(!MAP_isCharacterMapValid((*map)[line][column]))
                 {
                     valid = false;
                     break;
@@ -43,7 +43,7 @@ bool isMapValid(TMap *map)
     return valid;
 }
 
-bool isCharacterImportedValid(char character)
+bool MAP_isCharacterImportedValid(char character)
 {
     if((character==PACMAN) || (character==GHOST) || (character==WALL) || (character==DOT))
     {
@@ -55,9 +55,9 @@ bool isCharacterImportedValid(char character)
     }
 }
 
-bool isCharacterMapValid(char character)
+bool MAP_isCharacterMapValid(char character)
 {
-    if(isCharacterImportedValid(character) || (character==' '))
+    if(MAP_isCharacterImportedValid(character) || (character == EMPTY))
     {
         return true;
     }
@@ -67,7 +67,7 @@ bool isCharacterMapValid(char character)
     }
 }
 
-size_t getFoodCount(const TMap* map)
+size_t MAP_getFoodCount(const TMap* map)
 {
     size_t foodCount = 0;
     for(size_t line = 0; line < MAP_LINE_COUNT; line++)
@@ -84,12 +84,12 @@ size_t getFoodCount(const TMap* map)
 }
 
 //
-const char * getMapFilePath()
+const char * MAP_getMapFilePath()
 {
     return  "../Assets/map.txt";
 }
 
-TPoint getPacmanInitialPosition(TMap* map)
+TPoint MAP_getPacmanInitialPosition(TMap* map)
 {
     TPoint pacmanInitialPoint = {0,0};
     bool found = false;
@@ -110,7 +110,7 @@ TPoint getPacmanInitialPosition(TMap* map)
 
 // first ghost : index = 0
 // second ghost : index = 1
-TPoint getGhostInitialPosition(TMap* map,size_t index)
+TPoint MAP_getGhostInitialPosition(TMap* map, size_t index)
 {
     TPoint ghostInitialPoint = {0,0};
     bool found = false;
@@ -136,22 +136,22 @@ TPoint getGhostInitialPosition(TMap* map,size_t index)
 
 
 
-void setInSideMapValue(TMap* map, char value, u_int8_t x, u_int8_t y)
+void MAP_setInSideMapValue(TMap* map, char newValue, u_int8_t newValue_x, u_int8_t newValue_y)
 {
-    if((isCharacterImportedValid(value)) && (y + 1 < MAP_LINE_COUNT) && (x + 3 < MAP_COLUMN_COUNT))
+    if((MAP_isCharacterImportedValid(newValue)) && (newValue_y + 1 < MAP_LINE_COUNT) && (newValue_x + 3 < MAP_COLUMN_COUNT))
     {
-        (*map)[y+1][x+3] = value;
+        (*map)[newValue_y + 1][newValue_x + 3] = newValue;
     }
 }
 
-void initMap(TMap* map)
+void MAP_initMap(TMap* map)
 {
     for(u_int8_t line = 0; line < MAP_LINE_COUNT; line++)
     {
         for(u_int8_t column=0; column < MAP_COLUMN_COUNT; column++)
         {
             // empty by default
-            (*map)[line][column] = ' ';
+            (*map)[line][column] = EMPTY;
 
             // outer wall
             if(
@@ -173,18 +173,19 @@ void initMap(TMap* map)
     }
 }
 
-MapOperationResult loadMap(TMap* map)
+bool MAP_loadMap(TMap* map)
 {
+    bool mapLoaded = true;
     FILE *filePointer;
 
     // Set outer walls
-    initMap(map);
+    MAP_initMap(map);
 
     printf("\n");
 
     char buffer[MAP_FILE_COLUMN_COUNT];
     // open the Assets/file map_g.txt
-    filePointer = fopen(getMapFilePath(),"r");
+    filePointer = fopen(MAP_getMapFilePath(), "r");
 
     // set the beginning of the file
     if(filePointer!=NULL)
@@ -199,9 +200,9 @@ MapOperationResult loadMap(TMap* map)
         {
             for(u_int8_t i = 0; i < MAP_FILE_COLUMN_COUNT; i++)
             {
-                if(isCharacterImportedValid(buffer[i]))
+                if(MAP_isCharacterImportedValid(buffer[i]))
                 {
-                    setInSideMapValue(map,buffer[i],columnCounter,lineCounter);
+                    MAP_setInSideMapValue(map, buffer[i], columnCounter, lineCounter);
                     columnCounter+=3;
                     if(columnCounter>=MAP_FILE_COLUMN_COUNT)
                     {
@@ -216,9 +217,13 @@ MapOperationResult loadMap(TMap* map)
             }
         }
     }
+    else
+    {
+        mapLoaded = false;
+    }
     fclose(filePointer);
 
-    return MAP_OK;
+    return mapLoaded;
 }
 
 void printMap(TMap* map)
@@ -227,7 +232,7 @@ void printMap(TMap* map)
     printf("%s",(*map)[0]);
 }
 
-void insertMoveableElement(TMap* map,const TPacman pacman,const TGhost ghosts[2])
+void MAP_insertMovableElement(TMap* map, const TPacman pacman, const TGhost ghosts[2])
 {
     (*map)[pacman.position.y][pacman.position.x] = PACMAN;
     (*map)[ghosts[0].position.y][ghosts[0].position.x] = GHOST;
@@ -235,7 +240,7 @@ void insertMoveableElement(TMap* map,const TPacman pacman,const TGhost ghosts[2]
 }
 
 
-void removeMoveableElement(TMap* map)
+void MAP_removeMovableElement(TMap* map)
 {
     for(size_t line = 0; (line < MAP_LINE_COUNT); line++)
     {
@@ -243,15 +248,15 @@ void removeMoveableElement(TMap* map)
         {
             if((*map)[line][column]==PACMAN || (*map)[line][column]==GHOST)
             {
-                (*map)[line][column] = ' ';
+                (*map)[line][column] = EMPTY;
             }
         }
     }
 }
 
-bool isElementFood(TMap* map,size_t x,size_t y)
+bool MAP_isElementFood(const TMap* map, size_t x, size_t y)
 {
-    if(isCoordinatesValid(x,y))
+    if(MAP_isCoordinatesValid(x, y))
     {
         return (*map)[y][x]==DOT;
     }
@@ -261,11 +266,11 @@ bool isElementFood(TMap* map,size_t x,size_t y)
     }
 }
 
-void removeFoodElement(TMap* map,size_t x,size_t y)
+void MAP_removeFoodElement(TMap* map, size_t x, size_t y)
 {
-    if(isElementFood(map,x,y))
+    if(MAP_isElementFood(map, x, y))
     {
-        (*map)[y][x]=' ';
+        (*map)[y][x]=EMPTY;
     }
     else
     {
@@ -278,32 +283,32 @@ bool isCoordinatesValidForAMove(size_t x, size_t y)
     return (x >= LEFT_RIGHT_STEP) && (x < MAP_COLUMN_COUNT) && (y >= UP_DOWN_STEP) && (y < MAP_LINE_COUNT);
 }
 
-bool isCoordinatesValid(size_t x, size_t y)
+bool MAP_isCoordinatesValid(size_t x, size_t y)
 {
     return (x < MAP_COLUMN_COUNT) && (y < MAP_LINE_COUNT);
 }
 
-bool isWall(TMap* map, size_t x, size_t y, enum TEvent direction)
+bool MAP_isWall(const TMap* map, size_t x, size_t y, enum TEvent direction)
 {
-    if(isCoordinatesValid(x,y) && isDirectionEvent(direction))
+    if(MAP_isCoordinatesValid(x, y) && UTILS_isDirectionEvent(direction))
     {
         // UP
-        if(direction==MOVE_UP && isCoordinatesValid(x,y-UP_DOWN_STEP))
+        if(direction==MOVE_UP && MAP_isCoordinatesValid(x, y - UP_DOWN_STEP))
         {
             return (*map)[y-UP_DOWN_STEP][x]==WALL;
         }
         // DOWN
-        else if(direction==MOVE_DOWN && isCoordinatesValid(x,y+UP_DOWN_STEP))
+        else if(direction==MOVE_DOWN && MAP_isCoordinatesValid(x, y + UP_DOWN_STEP))
         {
             return (*map)[y+UP_DOWN_STEP][x]==WALL;
         }
         // RIGHT
-        else if(direction==MOVE_RIGHT && isCoordinatesValid(x+LEFT_RIGHT_STEP,y))
+        else if(direction==MOVE_RIGHT && MAP_isCoordinatesValid(x + LEFT_RIGHT_STEP, y))
         {
             return (*map)[y][x+LEFT_RIGHT_STEP]==WALL;
         }
         // LEFT
-        else if(direction==MOVE_LEFT && isCoordinatesValid(x-LEFT_RIGHT_STEP,y))
+        else if(direction==MOVE_LEFT && MAP_isCoordinatesValid(x - LEFT_RIGHT_STEP, y))
         {
             return (*map)[y][x-LEFT_RIGHT_STEP]==WALL;
         }

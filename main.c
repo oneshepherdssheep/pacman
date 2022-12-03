@@ -19,7 +19,7 @@ TGhost ghosts_g[2] = {
 
 void initPacman(TMap* map,TPacman* pacman)
 {
-    TPoint point = getPacmanInitialPosition(map);
+    TPoint point = MAP_getPacmanInitialPosition(map);
     pacman->position.x = point.x;
     pacman->position.y = point.y;
     printf("Pacman (%d,%d)\n", pacman->position.x, pacman->position.y);
@@ -30,7 +30,7 @@ void initGhosts(TMap* map,TGhost ghosts[2],const size_t ghostCount)
     // Ghosts
     for(size_t index = 0; index < ghostCount;index++)
     {
-        TPoint point = getGhostInitialPosition(map,index);
+        TPoint point = MAP_getGhostInitialPosition(map, index);
         ghosts[index].position.x = point.x;
         ghosts[index].position.y = point.y;
         printf("Ghost  (%d,%d)\n", ghosts[index].position.x, ghosts[index].position.y);
@@ -39,24 +39,28 @@ void initGhosts(TMap* map,TGhost ghosts[2],const size_t ghostCount)
 
 //
 
-void gameInit()
+bool gameInit()
 {
+    bool gameReady;
     printf("Pacman");
     // Init
     map_g = (TMap*) malloc(sizeof(TMap));
-    loadMap(map_g);
-    if(isMapValid(map_g))
+    MAP_loadMap(map_g);
+    if(MAP_isMapValid(map_g))
     {
         initPacman(map_g, &pacman_g);
         initGhosts(map_g,ghosts_g,sizeof(ghosts_g)/sizeof(ghosts_g[0]));
-        removeMoveableElement(map_g);
+        MAP_removeMovableElement(map_g);
         printf("[pacman] valid map_g loaded.\n");
-        draw(map_g,pacman_g,ghosts_g);
+        GRAPHICS_draw(map_g, pacman_g, ghosts_g);
+        gameReady = true;
     }
     else
     {
         printf("[pacman_g] map_g loaded is invalid!\n");
+        gameReady = false;
     }
+    return gameReady;
 }
 
 void gameLoop()
@@ -68,24 +72,24 @@ void gameLoop()
 
     do{
         //// INPUTS
-        event = getLastUserInputEvent();
-        if(isEventAMove(event) && !partyFinished)
+        event = INPUT_getLastUserInputEvent();
+        if(INPUT_isEventAMove(event) && !partyFinished)
         {
             //// PHYSICS
             // Pacman Physics
-            movePacman(map_g,&pacman_g,event);
-            removeFoodElement(map_g, pacman_g.position.x, pacman_g.position.y);
+            PHYSICS_movePacman(map_g, &pacman_g, event);
+            MAP_removeFoodElement(map_g, pacman_g.position.x, pacman_g.position.y);
             // Ghosts Physics
-            moveGhosts(map_g,&pacman_g,ghosts_g,ghostCount);
-            updateGhostsState(&pacman_g,ghosts_g,ghostCount);
+            PHYSICS_moveGhosts(map_g, &pacman_g, ghosts_g, ghostCount);
+            PHYSICS_updateGhostsState(&pacman_g, ghosts_g, ghostCount);
             //// GAME LOGIC
             // Game Logic most priority for Pacman (Win counted first than Loss)
-            if(winCheck(map_g))
+            if(GAMELOGIC_winCheck(map_g))
             {
                 partyStatus = PARTY_WON;
                 partyFinished = true;
             }
-            else if(loseCheck(pacman_g, ghosts_g, ghostCount))
+            else if(GAMELOGIC_loseCheck(pacman_g, ghosts_g, ghostCount))
             {
                 partyStatus = PARTY_LOST;
                 partyFinished = true;
@@ -95,7 +99,7 @@ void gameLoop()
                 // Nothing to do
             }
             //// GRAPHICS
-            draw(map_g,pacman_g,ghosts_g);
+            GRAPHICS_draw(map_g, pacman_g, ghosts_g);
         }
 
         //// GAME LOGIC WINNING and LOSING CHECKS
@@ -104,17 +108,17 @@ void gameLoop()
             // nothing to do
             if(partyStatus == PARTY_WON)
             {
-                printWinMessage();
+                GAMELOGIC_printWinMessage();
             }
             else if(partyStatus == PARTY_LOST)
             {
-                printLoseMessage();
+                GAMELOGIC_printLoseMessage();
             }
             else
             {
                 // Nothing to do (shouldn't happen)
             }
-            getLastUserInputEvent();
+            INPUT_getLastUserInputEvent();
             event = EXIT;
         }
         else
@@ -133,8 +137,11 @@ void gameExit()
 
 int main()
 {
-    gameInit();
-    gameLoop();
+    if(gameInit())
+    {
+        gameLoop();
+    }
     gameExit();
+
     return 0;
 }

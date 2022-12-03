@@ -1,6 +1,6 @@
 #include "ai.h"
 
-size_t rollDice(size_t numberOfFaces)
+size_t AI_rollDice(size_t numberOfFaces)
 {
     size_t roll = 1;
     if(numberOfFaces!=0)
@@ -24,7 +24,7 @@ enum TEvent getRandomDirection(const TMap *map,TGhost ghost)
 
 }
 
-enum TEvent getRandomAvailableDirection(const TMap *map,TGhost ghost) {
+enum TEvent AI_getRandomAvailableDirection(const TMap *map, TGhost ghost) {
     TDirections directions[4] = {
             {MOVE_UP,    true},
             {MOVE_DOWN,  true},
@@ -33,7 +33,7 @@ enum TEvent getRandomAvailableDirection(const TMap *map,TGhost ghost) {
     };
     size_t directionsCount = sizeof(directions) / sizeof(directions[0]);
     size_t possibleDirectionCount = 4;
-    bool canKeepSameDirection = !isWall(map, ghost.position.x, ghost.position.y, ghost.lastDirection);
+    bool canKeepSameDirection = !MAP_isWall(map, ghost.position.x, ghost.position.y, ghost.lastDirection);
     enum TEvent selectedDirection = ghost.lastDirection;
 
     // Debug
@@ -47,7 +47,7 @@ enum TEvent getRandomAvailableDirection(const TMap *map,TGhost ghost) {
         // Flag impossibles directions
         for (size_t index = 0; index < directionsCount; index++)
         {
-            if (isWall(map, ghost.position.x, ghost.position.y, directions[index].direction))
+            if (MAP_isWall(map, ghost.position.x, ghost.position.y, directions[index].direction))
             {
                 directions[index].available = false;
                 possibleDirectionCount--;
@@ -58,7 +58,7 @@ enum TEvent getRandomAvailableDirection(const TMap *map,TGhost ghost) {
             }
         }
         //
-        size_t directionNumber = rollDice(possibleDirectionCount);
+        size_t directionNumber = AI_rollDice(possibleDirectionCount);
         size_t count = 1;
         for (size_t index = 0; index < directionsCount; index++)
         {

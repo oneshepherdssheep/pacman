@@ -1,13 +1,13 @@
 #include "game_logic.h"
 
 
-bool winCheck(const TMap* map)
+bool GAMELOGIC_winCheck(const TMap* map)
 {
-    return (getFoodCount(map)==0);
+    return (MAP_getFoodCount(map) == 0);
 }
 
 
-bool loseCheck(const TPacman pacman, const TGhost ghosts[], const size_t ghostCount)
+bool GAMELOGIC_loseCheck(const TPacman pacman, const TGhost ghosts[], const size_t ghostCount)
 {
     bool lost = false;
     for(size_t index = 0; index < ghostCount;index++)
@@ -21,13 +21,13 @@ bool loseCheck(const TPacman pacman, const TGhost ghosts[], const size_t ghostCo
     return lost;
 }
 
-void printWinMessage()
+void GAMELOGIC_printWinMessage()
 {
     printf("Congratulations! You win!\nPress any key to exit the game.\n");
 }
 
 
-void printLoseMessage()
+void GAMELOGIC_printLoseMessage()
 {
     printf("Sorry, you lose.\nPress any key to exit the game\n");
 }

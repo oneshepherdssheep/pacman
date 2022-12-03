@@ -26,7 +26,7 @@ enum TEvent {
     NONE,
 };
 
-bool isDirectionEvent(enum TEvent event);
-bool isPointCloseToPoint(TPoint p1,TPoint p2);
+bool UTILS_isDirectionEvent(enum TEvent event);
+bool UTILS_isPointCloseToPoint(TPoint p1, TPoint p2);
 
 #endif

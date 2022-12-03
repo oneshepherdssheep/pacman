@@ -1,7 +1,7 @@
 #include "input.h"
 #include "colours.h"
 
-bool isEventAMove(enum TEvent event)
+bool INPUT_isEventAMove(enum TEvent event)
 {
     if(event==MOVE_UP || event==MOVE_DOWN || event==MOVE_LEFT || event==MOVE_RIGHT)
     {
@@ -13,7 +13,7 @@ bool isEventAMove(enum TEvent event)
     }
 }
 
-enum TEvent getLastUserInputEvent()
+enum TEvent INPUT_getLastUserInputEvent()
 {
     char typedCharacter = getch();//getchar();
     if(typedCharacter == UP)
