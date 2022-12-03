@@ -4,6 +4,11 @@
 #include <stdbool.h>
 
 //
+#define PACMAN 'P'
+#define GHOST 'G'
+#define DOT '.'
+#define WALL 'W'
+#define EMPTY ' '
 
 // TPoint
 typedef struct {

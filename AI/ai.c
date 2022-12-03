@@ -33,7 +33,7 @@ enum TEvent getRandomAvailableDirection(const TMap *map,TGhost ghost) {
     };
     size_t directionsCount = sizeof(directions) / sizeof(directions[0]);
     size_t possibleDirectionCount = 4;
-    bool canKeepSameDirection = !isWall(map, ghost.point.x, ghost.point.y, ghost.lastDirection);
+    bool canKeepSameDirection = !isWall(map, ghost.position.x, ghost.position.y, ghost.lastDirection);
     enum TEvent selectedDirection = ghost.lastDirection;
 
     // Debug
@@ -47,7 +47,7 @@ enum TEvent getRandomAvailableDirection(const TMap *map,TGhost ghost) {
         // Flag impossibles directions
         for (size_t index = 0; index < directionsCount; index++)
         {
-            if (isWall(map, ghost.point.x, ghost.point.y, directions[index].direction))
+            if (isWall(map, ghost.position.x, ghost.position.y, directions[index].direction))
             {
                 directions[index].available = false;
                 possibleDirectionCount--;

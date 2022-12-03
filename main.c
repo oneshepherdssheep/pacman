@@ -31,9 +31,9 @@ void initGhosts(TMap* map,TGhost ghosts[2],const size_t ghostCount)
     for(size_t index = 0; index < ghostCount;index++)
     {
         TPoint point = getGhostInitialPosition(map,index);
-        ghosts[index].point.x = point.x;
-        ghosts[index].point.y = point.y;
-        printf("Ghost  (%d,%d)\n", ghosts[index].point.x, ghosts[index].point.y);
+        ghosts[index].position.x = point.x;
+        ghosts[index].position.y = point.y;
+        printf("Ghost  (%d,%d)\n", ghosts[index].position.x, ghosts[index].position.y);
     }
 }
 
@@ -67,39 +67,39 @@ void gameLoop()
     size_t ghostCount = sizeof(ghosts_g)/sizeof(ghosts_g[0]);
 
     do{
+        //// INPUTS
         event = getLastUserInputEvent();
         if(isEventAMove(event) && !partyFinished)
         {
+            //// PHYSICS
             // Pacman Physics
             movePacman(map_g,&pacman_g,event);
             removeFoodElement(map_g, pacman_g.position.x, pacman_g.position.y);
+            // Ghosts Physics
+            moveGhosts(map_g,&pacman_g,ghosts_g,ghostCount);
+            updateGhostsState(&pacman_g,ghosts_g,ghostCount);
+            //// GAME LOGIC
             // Game Logic most priority for Pacman (Win counted first than Loss)
-            if(isGameWon(map_g))
+            if(winCheck(map_g))
             {
                 partyStatus = PARTY_WON;
                 partyFinished = true;
             }
-            else if(isGameLost(pacman_g,ghosts_g,ghostCount))
+            else if(loseCheck(pacman_g, ghosts_g, ghostCount))
             {
                 partyStatus = PARTY_LOST;
                 partyFinished = true;
             }
             else
             {
-                // Ghosts Physics
-                moveGhosts(map_g,&pacman_g,ghosts_g,ghostCount);
-                updateGhostsState(&pacman_g,ghosts_g,ghostCount);
-                // Game Logic less priority for Ghosts
-                if(isGameLost(pacman_g,ghosts_g,ghostCount))
-                {
-                    partyStatus = PARTY_LOST;
-                    partyFinished = true;
-                }
+                // Nothing to do
             }
-            // Graphics for all
+            //// GRAPHICS
             draw(map_g,pacman_g,ghosts_g);
         }
-        else if(partyFinished)
+
+        //// GAME LOGIC WINNING and LOSING CHECKS
+        if(partyFinished)
         {
             // nothing to do
             if(partyStatus == PARTY_WON)

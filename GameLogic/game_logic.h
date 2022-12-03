@@ -10,8 +10,8 @@ enum EPartyStatus
     PARTY_WON
 };
 
-bool isGameWon(const TMap* map);
-bool isGameLost(const TPacman pacman,const TGhost ghosts[],const size_t ghostCount);
+bool winCheck(const TMap* map);
+bool loseCheck(const TPacman pacman, const TGhost ghosts[], const size_t ghostCount);
 void printWinMessage();
 void printLoseMessage();
 

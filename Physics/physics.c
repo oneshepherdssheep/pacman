@@ -76,13 +76,13 @@ void moveGhosts(TMap* map,TPacman* pacman,TGhost* ghosts,const size_t ghostCount
         if(ghosts[index].state == NORMAL)
         {
             enum TEvent nextDirection = getRandomAvailableDirection(map,ghosts[index]);
-            movePoint(&ghosts[index].point,nextDirection);
+            movePoint(&ghosts[index].position, nextDirection);
             ghosts[index].lastDirection = nextDirection;
         }
         //// CHASE
         else if(ghosts[index].state == CHASE)
         {
-            movePointTo(&ghosts[index].point, pacman->lastPosition);
+            movePointTo(&ghosts[index].position, pacman->lastPosition);
         }
         else
         {
@@ -95,7 +95,7 @@ void updateGhostsState(const TPacman* pacman,TGhost* ghosts,const size_t ghostCo
 {
     for(size_t index = 0; index < ghostCount; index++)
     {
-        if(isPointCloseToPoint(pacman->position, ghosts[index].point))
+        if(isPointCloseToPoint(pacman->position, ghosts[index].position))
         {
             ghosts[index].state = CHASE;
         }

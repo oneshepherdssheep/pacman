@@ -15,7 +15,7 @@ bool isMapValid(TMap *map)
                 (column == (MAP_COLUMN_COUNT - 2))
               )
             {
-                if((*map)[line][column] != 'W')
+                if((*map)[line][column] != WALL)
                 {
                     valid = false;
                     break;
@@ -45,7 +45,7 @@ bool isMapValid(TMap *map)
 
 bool isCharacterImportedValid(char character)
 {
-    if((character=='P') || (character=='G') || (character=='W') || (character=='.'))
+    if((character==PACMAN) || (character==GHOST) || (character==WALL) || (character==DOT))
     {
         return true;
     }
@@ -67,14 +67,14 @@ bool isCharacterMapValid(char character)
     }
 }
 
-size_t getFoodCount(TMap* map)
+size_t getFoodCount(const TMap* map)
 {
     size_t foodCount = 0;
     for(size_t line = 0; line < MAP_LINE_COUNT; line++)
     {
         for(size_t column=0; column < MAP_COLUMN_COUNT; column++)
         {
-            if((*map)[line][column]=='.')
+            if((*map)[line][column]==DOT)
             {
                 foodCount++;
             }
@@ -97,7 +97,7 @@ TPoint getPacmanInitialPosition(TMap* map)
     {
         for(size_t column=0; (column < MAP_COLUMN_COUNT) && !found; column++)
         {
-            if((*map)[line][column]=='P')
+            if((*map)[line][column]==PACMAN)
             {
                 pacmanInitialPoint.x = (int)column;
                 pacmanInitialPoint.y = (int)line;
@@ -119,7 +119,7 @@ TPoint getGhostInitialPosition(TMap* map,size_t index)
     {
         for(size_t column=0; (column < MAP_COLUMN_COUNT) && !found; column++)
         {
-            if((*map)[line][column]=='G')
+            if((*map)[line][column]==GHOST)
             {
                 if(index==ghostIndex)
                 {
@@ -161,7 +161,7 @@ void initMap(TMap* map)
                 (column == (MAP_COLUMN_COUNT - 2)))
                 )
             {
-                (*map)[line][column] = 'W';
+                (*map)[line][column] = WALL;
             }
 
             // new line character
@@ -229,9 +229,9 @@ void printMap(TMap* map)
 
 void insertMoveableElement(TMap* map,const TPacman pacman,const TGhost ghosts[2])
 {
-    (*map)[pacman.position.y][pacman.position.x] = 'P';
-    (*map)[ghosts[0].point.y][ghosts[0].point.x] = 'G';
-    (*map)[ghosts[1].point.y][ghosts[1].point.x] = 'G';
+    (*map)[pacman.position.y][pacman.position.x] = PACMAN;
+    (*map)[ghosts[0].position.y][ghosts[0].position.x] = GHOST;
+    (*map)[ghosts[1].position.y][ghosts[1].position.x] = GHOST;
 }
 
 
@@ -241,7 +241,7 @@ void removeMoveableElement(TMap* map)
     {
         for(size_t column=0; (column < MAP_COLUMN_COUNT); column++)
         {
-            if(((*map)[line][column]=='P') || ((*map)[line][column]=='G')              )
+            if((*map)[line][column]==PACMAN || (*map)[line][column]==GHOST)
             {
                 (*map)[line][column] = ' ';
             }
@@ -253,7 +253,7 @@ bool isElementFood(TMap* map,size_t x,size_t y)
 {
     if(isCoordinatesValid(x,y))
     {
-        return (*map)[y][x]=='.';
+        return (*map)[y][x]==DOT;
     }
     else
     {
@@ -290,22 +290,22 @@ bool isWall(TMap* map, size_t x, size_t y, enum TEvent direction)
         // UP
         if(direction==MOVE_UP && isCoordinatesValid(x,y-UP_DOWN_STEP))
         {
-            return (*map)[y-UP_DOWN_STEP][x]=='W';
+            return (*map)[y-UP_DOWN_STEP][x]==WALL;
         }
         // DOWN
         else if(direction==MOVE_DOWN && isCoordinatesValid(x,y+UP_DOWN_STEP))
         {
-            return (*map)[y+UP_DOWN_STEP][x]=='W';
+            return (*map)[y+UP_DOWN_STEP][x]==WALL;
         }
         // RIGHT
         else if(direction==MOVE_RIGHT && isCoordinatesValid(x+LEFT_RIGHT_STEP,y))
         {
-            return (*map)[y][x+LEFT_RIGHT_STEP]=='W';
+            return (*map)[y][x+LEFT_RIGHT_STEP]==WALL;
         }
         // LEFT
         else if(direction==MOVE_LEFT && isCoordinatesValid(x-LEFT_RIGHT_STEP,y))
         {
-            return (*map)[y][x-LEFT_RIGHT_STEP]=='W';
+            return (*map)[y][x-LEFT_RIGHT_STEP]==WALL;
         }
         else
         {

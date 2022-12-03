@@ -32,7 +32,7 @@ typedef struct
 
 typedef struct
 {
-    TPoint point;
+    TPoint position;
     enum TGhostState state;
     enum TEvent lastDirection;
 } TGhost;

@@ -55,7 +55,7 @@ void setInSideMapValue(TMap* map, char newValue, u_int8_t newValue_x, u_int8_t n
 const char * getMapFilePath();
 TPoint getPacmanInitialPosition(TMap* map);
 TPoint getGhostInitialPosition(TMap* map,size_t index);
-size_t getFoodCount(TMap* map);
+size_t getFoodCount(const TMap* map);
 
 // ------------------------------------------------------------ //
 // checker

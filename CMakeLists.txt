@@ -17,7 +17,7 @@ set(HEADER_FILES    Map/map.h
 set(SOURCE_FILES    main.c
                     Map/map.c
                     Input/input.c
-                    Input/colours.cpp
+        Input/colours.c
                     Graphics/graphics.c
                     AI/ai.c
                     Physics/physics.c

@@ -5,6 +5,6 @@
 #include "../GameObject/game_object.h"
 
 //void draw(TMap* map);
-void draw(TMap* map,const TPacman pacman, const TGhost* ghosts[]);
+void draw(TMap* map,const TPacman pacman, const TGhost* ghosts);
 
 #endif

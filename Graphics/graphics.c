@@ -1,7 +1,7 @@
 #include "graphics.h"
 #include <string.h>
 
-void draw(TMap* map,const TPacman pacman, const TGhost* ghosts[])
+void draw(TMap* map,const TPacman pacman, const TGhost* ghosts)
 {
     // copy map to insert movable element
     TMap* drawnMap = (TMap*)malloc(sizeof(TMap));

@@ -32,7 +32,7 @@
 #endif
 #if __linux__
     #include <termios.h>
-    #include <cstdio>
+    #include <stdio.h>
     /* Initialize new terminal i/o settings */
     void initTermios(int echo)
     {
