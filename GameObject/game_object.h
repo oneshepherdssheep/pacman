@@ -6,13 +6,18 @@
 #include <stdbool.h>
 #include "../Utils/utils.h"
 
-enum TGhostState
+/**
+ * @brief Enum representing the two possible state of a ghost
+ */
+enum EGhostState
 {
     NORMAL,
     CHASE,
 };
 
-// Unmovable Game Object
+/**
+ * @brief Struct representing unmovable in game object (food,walls in our cases)
+ */
 typedef struct
 {
     const size_t x;
@@ -20,34 +25,28 @@ typedef struct
 
 } TUnMovableGameObject;
 
-// Pacman
-
+/**
+ * @brief Struct representing the pacman controlled by the player during the game
+ */
 typedef struct
 {
     TPoint position;
     TPoint lastPosition;
 } TPacman;
 
-// Ghost
-
+/**
+ * @brief Struct representing a ghost controlled by the AI during the game
+ */
 typedef struct
 {
     TPoint position;
-    enum TGhostState state;
-    enum TEvent lastDirection;
+    enum EGhostState state;
+    enum EEvent lastDirection;
 } TGhost;
 
-// Food
-
-typedef struct
-{
-    const size_t x;
-    const size_t y;
-    bool exist;
-} TFood;
-
-// Wall
-
+/**
+ * @brief Redefining TWall as an TUnMovableGameObject
+ */
 typedef TUnMovableGameObject TWall;
 
 #endif

@@ -6,17 +6,38 @@
 #include "Physics/physics.h"
 #include "GameLogic/game_logic.h"
 
-// Game Data Set
+//----------------------------------------------------------//
+//                  GLOBAL DATA SET
+//----------------------------------------------------------//
 
+/**
+ * @brief The current in game map
+ */
 TMap* map_g;
+
+/**
+ * @brief The current in game pacman
+ */
 TPacman pacman_g = {0, 0,NONE};
+
+/**
+ * @brief The current in game ghosts
+ */
 TGhost ghosts_g[2] = {
         {0,0,NORMAL},
         {0,0,NORMAL}
 };
 
-//
+//----------------------------------------------------------//
+//                  FUNCTIONS / PROCEDURES
+//----------------------------------------------------------//
 
+
+/**
+ * @brief Initialize the pacman
+ * @param map : the current in-game map
+ * @param pacman : the played pacman
+ */
 void initPacman(TMap* map,TPacman* pacman)
 {
     TPoint point = MAP_getPacmanInitialPosition(map);
@@ -25,6 +46,12 @@ void initPacman(TMap* map,TPacman* pacman)
     printf("Pacman (%d,%d)\n", pacman->position.x, pacman->position.y);
 }
 
+/**
+ * @brief Method to initalize the ghosts
+ * @param map : the current in game map
+ * @param ghosts : the ghosts present during the game
+ * @param ghostCount : the number of ghosts
+ */
 void initGhosts(TMap* map,TGhost ghosts[2],const size_t ghostCount)
 {
     // Ghosts
@@ -37,8 +64,11 @@ void initGhosts(TMap* map,TGhost ghosts[2],const size_t ghostCount)
     }
 }
 
-//
 
+/**
+ * @brief Method to initialize the game
+ * @return true if the game was properly initialized, false otherwise
+ */
 bool gameInit()
 {
     bool gameReady;
@@ -63,11 +93,19 @@ bool gameInit()
     return gameReady;
 }
 
+/**
+ * @brief Main in-game loop handling the different component of the game:
+ *        - physics
+ *        - graphics
+ *        - logic
+ *        - AI
+ *        - etc.
+ */
 void gameLoop()
 {
     bool partyFinished = false;
     enum EPartyStatus partyStatus = PARTY_ONGOING;
-    enum TEvent event;
+    enum EEvent event;
     size_t ghostCount = sizeof(ghosts_g)/sizeof(ghosts_g[0]);
 
     do{
@@ -130,6 +168,10 @@ void gameLoop()
 
 }
 
+/**
+ * @brief Method called when terminating the game
+ *        The goal is to free all resources properly during this phase
+ */
 void gameExit()
 {
     free(map_g);

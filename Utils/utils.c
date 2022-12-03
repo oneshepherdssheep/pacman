@@ -1,6 +1,6 @@
 #include "utils.h"
 
-bool UTILS_isDirectionEvent(enum TEvent event)
+bool UTILS_isDirectionEvent(enum EEvent event)
 {
     if(
         (event==MOVE_RIGHT) ||

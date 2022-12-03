@@ -8,7 +8,7 @@ bool PHYSICS_movePointTo(TPoint* point, const TPoint destination)
     point->y = destination.y;
 }
 
-bool PHYSICS_movePoint(TPoint* point, enum TEvent directionEvent)
+bool PHYSICS_movePoint(TPoint* point, enum EEvent directionEvent)
 {
     bool pointChanged = true;
     // UP
@@ -45,19 +45,21 @@ bool PHYSICS_movePoint(TPoint* point, enum TEvent directionEvent)
  * @param pacman
  * @param directionEvent
  */
-bool PHYSICS_movePacman(TMap* map, TPacman* pacman, enum TEvent directionEvent)
-{
+bool PHYSICS_movePacman(TMap* map, TPacman* pacman, enum EEvent directionEvent) {
     bool hasMoved = false;
-    pacman->lastPosition.x = pacman->position.x;
-    pacman->lastPosition.y = pacman->position.y;
-    if(!MAP_isWall(map, pacman->position.x, pacman->position.y, directionEvent))
+    if(map!=NULL)
     {
-        hasMoved = true;
-        hasMoved = PHYSICS_movePoint(&pacman->position, directionEvent);
-    }
-    else
-    {
-        // Nothing to do
+        pacman->lastPosition.x = pacman->position.x;
+        pacman->lastPosition.y = pacman->position.y;
+        if (!MAP_isWall(map, pacman->position.x, pacman->position.y, directionEvent))
+        {
+            hasMoved = true;
+            hasMoved = PHYSICS_movePoint(&pacman->position, directionEvent);
+        }
+        else
+        {
+            // Nothing to do
+        }
     }
     return hasMoved;
 }
@@ -68,42 +70,65 @@ bool PHYSICS_movePacman(TMap* map, TPacman* pacman, enum TEvent directionEvent)
  * @param ghosts
  * @param directionEvent
  */
-void PHYSICS_moveGhosts(TMap* map, TPacman* pacman, TGhost* ghosts, const size_t ghostCount)
+bool PHYSICS_moveGhosts(TMap* map, TPacman* pacman, TGhost* ghosts, const size_t ghostCount)
 {
-    for(size_t index = 0; index < ghostCount; index++)
+    bool hasMoved = false;
+
+    if(map!=NULL && pacman!=NULL && ghosts!=NULL)
     {
-        //// NORMAL
-        if(ghosts[index].state == NORMAL)
+        for (size_t index = 0; index < ghostCount; index++)
         {
-            enum TEvent nextDirection = AI_getRandomAvailableDirection(map, ghosts[index]);
-            PHYSICS_movePoint(&ghosts[index].position, nextDirection);
-            ghosts[index].lastDirection = nextDirection;
-        }
-        //// CHASE
-        else if(ghosts[index].state == CHASE)
-        {
-            PHYSICS_movePointTo(&ghosts[index].position, pacman->lastPosition);
-        }
-        else
-        {
-            // Nothing to do
+            //// NORMAL
+            if (ghosts[index].state == NORMAL)
+            {
+                enum EEvent nextDirection = AI_getRandomAvailableDirection(map, ghosts[index]);
+                PHYSICS_movePoint(&ghosts[index].position, nextDirection);
+                ghosts[index].lastDirection = nextDirection;
+                hasMoved = true;
+            }
+            //// CHASE
+            else if (ghosts[index].state == CHASE)
+            {
+                PHYSICS_movePointTo(&ghosts[index].position, pacman->lastPosition);
+                hasMoved = true;
+            }
+            else
+            {
+                // Nothing to do
+            }
         }
     }
+    else
+    {
+        // Nothing to do
+    }
+    return hasMoved;
 }
 
-void PHYSICS_updateGhostsState(const TPacman* pacman, TGhost* ghosts, const size_t ghostCount)
+bool PHYSICS_updateGhostsState(const TPacman* pacman, TGhost* ghosts, const size_t ghostCount)
 {
-    for(size_t index = 0; index < ghostCount; index++)
+    bool updated=false;
+    if(pacman!=NULL && ghosts!=NULL)
     {
-        if(UTILS_isPointCloseToPoint(pacman->position, ghosts[index].position))
+        for (size_t index = 0; index < ghostCount; index++)
         {
-            ghosts[index].state = CHASE;
-        }
-        else
-        {
-            ghosts[index].state = NORMAL;
+            if (UTILS_isPointCloseToPoint(pacman->position, ghosts[index].position))
+            {
+                ghosts[index].state = CHASE;
+                updated = true;
+            }
+            else
+            {
+                ghosts[index].state = NORMAL;
+                updated = true;
+            }
         }
     }
+    else
+    {
+        // Nothing to do
+    }
+    return updated;
 }
 
 
