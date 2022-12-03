@@ -47,3 +47,9 @@ bool UTILS_isPointCloseToPoint(TPoint p1, TPoint p2)
         return false;
     }
 }
+
+bool UTILS_isPointEqualToPoint(const TPoint p1,const TPoint p2)
+{
+    return ((p1.x==p2.x) && (p1.y == p2.y));
+}
+

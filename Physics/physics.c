@@ -39,19 +39,32 @@ bool PHYSICS_movePoint(TPoint* point, enum EEvent directionEvent)
 }
 
 
-/**
- *
- * @param map
- * @param pacman
- * @param directionEvent
- */
-bool PHYSICS_movePacman(TMap* map, TPacman* pacman, enum EEvent directionEvent) {
+
+bool PHYSICS_movePacman(TMap* map, TPacman* pacman,TGhost* ghosts, const size_t ghostCount, enum EEvent directionEvent) {
     bool hasMoved = false;
     if(map!=NULL)
     {
+        // Saving last position regardless of the following
         pacman->lastPosition.x = pacman->position.x;
         pacman->lastPosition.y = pacman->position.y;
-        if (!MAP_isWall(map, pacman->position.x, pacman->position.y, directionEvent))
+        // Check if traversing ghosts
+        bool traversingGhosts = false;
+        for(size_t index = 0; index <ghostCount;index++)
+        {
+            TPoint p = {pacman->position.x,pacman->position.y};
+            PHYSICS_movePoint(&p,directionEvent);
+            if(UTILS_isPointEqualToPoint(p,ghosts[index].position))
+            {
+                traversingGhosts = true;
+                break;
+            }
+            else
+            {
+                // Nothing to do
+            }
+        }
+        // Check wall
+        if (!traversingGhosts && !MAP_isWall(map, pacman->position.x, pacman->position.y, directionEvent))
         {
             hasMoved = true;
             hasMoved = PHYSICS_movePoint(&pacman->position, directionEvent);
@@ -60,6 +73,10 @@ bool PHYSICS_movePacman(TMap* map, TPacman* pacman, enum EEvent directionEvent) 
         {
             // Nothing to do
         }
+    }
+    else
+    {
+        // Nothing to do
     }
     return hasMoved;
 }

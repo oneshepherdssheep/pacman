@@ -21,17 +21,6 @@ bool GAMELOGIC_loseCheck(const TPacman pacman, const TGhost ghosts[], const size
     return lost;
 }
 
-void GAMELOGIC_printWinMessage()
-{
-    printf("Congratulations! You win!\nPress any key to exit the game.\n");
-}
-
-
-void GAMELOGIC_printLoseMessage()
-{
-    printf("Sorry, you lose.\nPress any key to exit the game\n");
-}
-
 bool GAMELOGIC_updateGhostsState(const TPacman* pacman, TGhost* ghosts, const size_t ghostCount)
 {
     bool updated=false;

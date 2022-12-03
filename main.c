@@ -115,7 +115,7 @@ void gameLoop()
         {
             //// PHYSICS
             // Pacman Physics
-            PHYSICS_movePacman(map_g, &pacman_g, event);
+            PHYSICS_movePacman(map_g, &pacman_g,ghosts_g, ghostCount, event);
             MAP_removeFoodElement(map_g, pacman_g.position.x, pacman_g.position.y);
             // Ghosts Physics
             PHYSICS_moveGhosts(map_g, &pacman_g, ghosts_g, ghostCount);
@@ -146,11 +146,11 @@ void gameLoop()
             // nothing to do
             if(partyStatus == PARTY_WON)
             {
-                GAMELOGIC_printWinMessage();
+                GRAPHICS_printWinMessage();
             }
             else if(partyStatus == PARTY_LOST)
             {
-                GAMELOGIC_printLoseMessage();
+                GRAPHICS_printLoseMessage();
             }
             else
             {

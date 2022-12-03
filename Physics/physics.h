@@ -11,10 +11,12 @@
  * @brief Move the pacman on the map according the to the indicated direction
  * @param map : the map of the current game
  * @param pacman : the pacman to move
+ * @param ghosts : the array of ghosts available
+ * @param ghostCount : the numbber of ghosts avaialble
  * @param directionEvent : the direction to move the pacman to move to
  * @return true if the pacman has been moved, false otherwise
  */
-bool PHYSICS_movePacman(TMap* map, TPacman* pacman, enum EEvent directionEvent);
+bool PHYSICS_movePacman(TMap* map, TPacman* pacman,TGhost* ghosts, const size_t ghostCount, enum EEvent directionEvent);
 
 /**
  * @brief Move a point to another location according to the indicated direction

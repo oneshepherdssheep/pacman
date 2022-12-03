@@ -30,16 +30,6 @@ bool GAMELOGIC_winCheck(const TMap* map);
 bool GAMELOGIC_loseCheck(const TPacman pacman, const TGhost ghosts[], const size_t ghostCount);
 
 /**
- * @brief Print the winning message on the console
- */
-void GAMELOGIC_printWinMessage();
-
-/**
- * @brief Print the losing message on the console
- */
-void GAMELOGIC_printLoseMessage();
-
-/**
  * @brief Update the status of the ghosts according to their proximity with the pacman
  * @param pacman : the pacman that is targeted by the ghosts
  * @param ghosts : the ghosts whose state we want to updated

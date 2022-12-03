@@ -13,4 +13,15 @@
  */
 bool GRAPHICS_draw(TMap* map, const TPacman pacman, const TGhost* ghosts);
 
+
+/**
+ * @brief Print the winning message on the console
+ */
+void GRAPHICS_printWinMessage();
+
+/**
+ * @brief Print the losing message on the console
+ */
+void GRAPHICS_printLoseMessage();
+
 #endif

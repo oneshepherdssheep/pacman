@@ -63,4 +63,12 @@ bool UTILS_isDirectionEvent(enum EEvent event);
  */
 bool UTILS_isPointCloseToPoint(TPoint p1, TPoint p2);
 
+/**
+ * @brief Check if two points are identical
+ * @param p1 : first point
+ * @param p2 : second point
+ * @return true if the two points are identical, false otherwise
+ */
+bool UTILS_isPointEqualToPoint(const TPoint p1, const TPoint p2);
+
 #endif

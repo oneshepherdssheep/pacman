@@ -24,3 +24,16 @@ bool GRAPHICS_draw(TMap* map, const TPacman pacman, const TGhost* ghosts)
     }
     return done;
 }
+
+
+void GRAPHICS_printWinMessage()
+{
+    printf("Congratulations! You win!\nPress any key to exit the game.\n");
+}
+
+
+void GRAPHICS_printLoseMessage()
+{
+    printf("Sorry, you lose.\nPress any key to exit the game\n");
+}
+
