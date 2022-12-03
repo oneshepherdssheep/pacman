@@ -19,6 +19,7 @@ set(SOURCE_FILES    main.c
                     Input/input.c
                     Input/colours.cpp
                     Graphics/graphics.c
+                    AI/ai.c
                     Physics/physics.c
                     GameObject/game_object.c
                     GameLogic/game_logic.c

@@ -34,6 +34,7 @@ typedef struct
 {
     TPoint point;
     enum TGhostState state;
+    enum TEvent lastDirection;
 } TGhost;
 
 // Food

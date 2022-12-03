@@ -1,12 +1,29 @@
 #ifndef AI_H
 #define AI_H
 
-typedef enum AI_ID
+#include "../Utils/utils.h"
+#include "../Map/map.h"
+#include "../GameObject/game_object.h"
+
+enum AILevel
 {
-    GHOST_1, // Macky
-    GHOS_2, // Micky
-    // GHOST_3, // Mucky
-    // GHOS_4, // Mocky
+    LEVEL_0, // Dumb
+    LEVEL_1, // Has some sense
+    LEVEL_2, // Genius
 };
+
+typedef struct
+{
+    enum TEvent direction;
+    bool available;
+} TDirections;
+
+size_t rollDice(size_t numberOfFaces);
+enum TEvent getDirection(const TMap *map, TGhost ghost,enum AILevel level);
+enum TEvent getRandomDirection(const TMap *map,TGhost ghost);
+enum TEvent getRandomAvailableDirection(const TMap *map,TGhost ghost);
+enum TEvent getBestDirectionToFollowPacman(const TMap *map,TGhost ghost);
+
+
 
 #endif

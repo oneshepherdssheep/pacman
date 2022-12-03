@@ -273,6 +273,10 @@ void removeFoodElement(TMap* map,size_t x,size_t y)
     }
 }
 
+bool isCoordinatesValidForAMove(size_t x, size_t y)
+{
+    return (x >= LEFT_RIGHT_STEP) && (x < MAP_COLUMN_COUNT) && (y >= UP_DOWN_STEP) && (y < MAP_LINE_COUNT);
+}
 
 bool isCoordinatesValid(size_t x, size_t y)
 {
@@ -305,12 +309,12 @@ bool isWall(TMap* map, size_t x, size_t y, enum TEvent direction)
         }
         else
         {
-            return false;
+            return true;
         }
     }
     else
     {
-        return false;
+        return true;
     }
 }
 

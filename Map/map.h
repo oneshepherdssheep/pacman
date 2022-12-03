@@ -67,6 +67,7 @@ bool isCharacterMapValid(char character);
 bool isElementFood(TMap* map,size_t x,size_t y);
 bool isWall(TMap* map, size_t x, size_t y, enum TEvent direction);
 bool isCoordinatesValid(size_t x, size_t y);
+bool isCoordinatesValidForAMove(size_t x, size_t y);
 
 // ------------------------------------------------------------ //
 // others

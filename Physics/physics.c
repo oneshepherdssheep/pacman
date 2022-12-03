@@ -1,5 +1,6 @@
 #include "physics.h"
 #include "../Map/map.h"
+#include "../AI/ai.h"
 
 bool movePointTo(TPoint* point,const TPoint destination)
 {
@@ -74,12 +75,13 @@ void moveGhosts(TMap* map,TPacman* pacman,TGhost* ghosts,const size_t ghostCount
         //// NORMAL
         if(ghosts[index].state == NORMAL)
         {
-
+            enum TEvent nextDirection = getRandomAvailableDirection(map,ghosts[index]);
+            movePoint(&ghosts[index].point,nextDirection);
+            ghosts[index].lastDirection = nextDirection;
         }
         //// CHASE
         else if(ghosts[index].state == CHASE)
         {
-            // get pacman last move
             movePointTo(&ghosts[index].point, pacman->lastPosition);
         }
         else
