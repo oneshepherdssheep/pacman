@@ -1,0 +1,6 @@
+# ignore all IDE related files
+*.idea
+
+# ignore CMake related files
+cmake-*
+
