@@ -42,13 +42,4 @@ bool PHYSICS_movePointTo(TPoint* point, const TPoint destination);
  */
 bool PHYSICS_moveGhosts(TMap* map, TPacman* pacman, TGhost* ghosts, const size_t ghostCount);
 
-/**
- * @brief Update the status of the ghosts according to their proximity with the pacman
- * @param pacman : the pacman that is targeted by the ghosts
- * @param ghosts : the ghosts whose state we want to updated
- * @param ghostCount : the number of ghosts
- * @return true if the states were updated, false otherwise
- */
-bool PHYSICS_updateGhostsState(const TPacman* pacman, TGhost* ghosts, const size_t ghostCount);
-
 #endif

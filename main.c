@@ -119,7 +119,7 @@ void gameLoop()
             MAP_removeFoodElement(map_g, pacman_g.position.x, pacman_g.position.y);
             // Ghosts Physics
             PHYSICS_moveGhosts(map_g, &pacman_g, ghosts_g, ghostCount);
-            PHYSICS_updateGhostsState(&pacman_g, ghosts_g, ghostCount);
+            GAMELOGIC_updateGhostsState(&pacman_g, ghosts_g, ghostCount);
             //// GAME LOGIC
             // Game Logic most priority for Pacman (Win counted first than Loss)
             if(GAMELOGIC_winCheck(map_g))

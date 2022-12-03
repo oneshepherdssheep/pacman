@@ -16,16 +16,6 @@ enum EGhostState
 };
 
 /**
- * @brief Struct representing unmovable in game object (food,walls in our cases)
- */
-typedef struct
-{
-    const size_t x;
-    const size_t y;
-
-} TUnMovableGameObject;
-
-/**
  * @brief Struct representing the pacman controlled by the player during the game
  */
 typedef struct
@@ -44,9 +34,5 @@ typedef struct
     enum EEvent lastDirection;
 } TGhost;
 
-/**
- * @brief Redefining TWall as an TUnMovableGameObject
- */
-typedef TUnMovableGameObject TWall;
 
 #endif

@@ -215,12 +215,12 @@ bool MAP_loadMap(TMap* map) {
             fseek(filePointer, 0, SEEK_SET);
 
             // read the file
-            u_int8_t lineCounter = 0;
-            u_int8_t columnCounter = 0;
+            size_t lineCounter = 0;
+            size_t columnCounter = 0;
 
             while (fread(buffer, sizeof(*buffer), sizeof(buffer) / sizeof(buffer[0]), filePointer))
             {
-                for (u_int8_t i = 0; i < MAP_FILE_COLUMN_COUNT; i++)
+                for (size_t i = 0; i < MAP_FILE_COLUMN_COUNT; i++)
                 {
                     if (MAP_isCharacterImportedValid(buffer[i]))
                     {
