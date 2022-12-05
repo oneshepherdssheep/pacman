@@ -2,12 +2,8 @@
 
 ## Introduction
 
-This implementation is part of an assignment from UPWORK.
-I've developed this solution using CLion, but the project is a simple CMake project that should be able
-to compile on any machine.
+This very simple/basic implementation of PACMAN.
 
-I have a Linux machine, so I could not test it on Windows, but it should work (without or with minor tweaks).
-But I know Windows as well, so I shall be able to help in case of need.
 
 ## Design decisions
 
